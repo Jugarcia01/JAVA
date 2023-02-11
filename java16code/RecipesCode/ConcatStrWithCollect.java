@@ -9,7 +9,10 @@ class ConcatStrWithCollect {
     Stream<String> streamWords = Stream.of("this", "is", "a", "list", "of", "strings");
 
     var result1 = concatUsingLambdas(streamWords);
+    
+    Stream<String> streamWords2 = Stream.of("other","strings","joined","here!");
 
+    var result2 = concatUsingMethodReference(streamWords2);
   }
 
   static String concatUsingLambdas(Stream<String> inWords) {
@@ -20,6 +23,16 @@ class ConcatStrWithCollect {
       .toString();
     System.out.println(resultStr);
     return resultStr;
+  }
+
+  static String concatUsingMethodReference(Stream<String> inWords) {
+  String resultStr = inWords
+    .collect(StringBuilder::new,
+        StringBuilder::append,
+        StringBuilder::append)
+    .toString();
+  System.out.println(resultStr);
+  return resultStr;
   }
 
 }
