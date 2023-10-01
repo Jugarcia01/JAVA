@@ -32,7 +32,7 @@ public class ListOperations
     filteredFruitsList = fruits.stream().filter(p -> !"Mandarina".equals(p)).collect(Collectors.toList());
     System.out.print(filteredFruitsList +"\n");
 
-    filteredFruitsList = fruits.stream().filter(p -> !p.contains("Man")).toList();
+    filteredFruitsList = fruits.stream().filter(p -> !p.contains("Man")).collect(Collectors.toList());
     System.out.print(filteredFruitsList +"\n");
 
   }
