@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 public class ListOperations
 {
 
-  public static void main (String args[])
+  public static void main (String[] args)
   {
     System.out.println("List Operations on Java");
   
@@ -16,9 +16,9 @@ public class ListOperations
     myList.add("first");
     myList.add("Second");
 
-    System.out.print(myList.toString()+"\n");
+    System.out.print(myList+"\n");
    
-    List<String> fruits = new ArrayList<String>();
+    List<String> fruits = new ArrayList<>();
     fruits.add("Manzana");
     fruits.add("Banano");
     fruits.add("Fresa");
@@ -28,12 +28,12 @@ public class ListOperations
     fruits.add("Frambuesa");
 
     //Filtrando valores en la lista
-    List<String> filteredFruitsList = new ArrayList<>();
-    //filteredFruitsList = fruits.stream().filter(p -> !"Mandarina".equals(p)).collect(Collectors.toList());
-    //System.out.print(filteredFruitsList.toString()+"\n");
+    List<String> filteredFruitsList;
+    filteredFruitsList = fruits.stream().filter(p -> !"Mandarina".equals(p)).collect(Collectors.toList());
+    System.out.print(filteredFruitsList +"\n");
 
-    filteredFruitsList = fruits.stream().filter(p -> !p.contains("Man")).collect(Collectors.toList());
-    System.out.print(filteredFruitsList.toString()+"\n");
+    filteredFruitsList = fruits.stream().filter(p -> !p.contains("Man")).toList();
+    System.out.print(filteredFruitsList +"\n");
 
   }
 }

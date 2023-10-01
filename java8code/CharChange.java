@@ -1,6 +1,6 @@
 package java8code;
 
-/* Changing case of a speciﬁc character within an ASCII string
+/* Changing case of a specific character within an ASCII string
  * Steps:
  1- Declare a string.
  2- Input the string.
@@ -17,7 +17,7 @@ package java8code;
 
 import java.util.Scanner;
 
-public class charChange {
+public class CharChange {
   public static void main (String[] args) 
   {
     Scanner scanner = new Scanner(System.in);

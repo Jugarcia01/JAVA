@@ -4,10 +4,10 @@ package java8code;
 public class StrFormat
 {
 
-  public static void main (String args[])
+  public static void main (String[] args)
   {
     //Remove Whitespace from the Beginning and End of a String
-    String str1 = new String("  Cadena de texto nueva!   ");
+    String str1 = "  Cadena de texto nueva!   ";
     String strFmt1 = str1.trim();
 
     System.out.println(strFmt1);
