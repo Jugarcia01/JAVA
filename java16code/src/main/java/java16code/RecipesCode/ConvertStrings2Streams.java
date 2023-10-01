@@ -10,15 +10,15 @@ class ConvertStrings2Streams {
 
   public static boolean isPalindrone(String txtIn) {
     String text = txtIn.toLowerCase().codePoints()
-      .filter(Character::isLetterOrDigit)
-      .collect(StringBuilder::new, 
-          StringBuilder::appendCodePoint, 
-          StringBuilder::append)
-      .toString();
+        .filter(Character::isLetterOrDigit)
+        .collect(StringBuilder::new,
+            StringBuilder::appendCodePoint,
+            StringBuilder::append)
+        .toString();
 
     String textInverted = new StringBuilder(text)
-                                .reverse()
-                                .toString();
+        .reverse()
+        .toString();
 
     return text.equals(textInverted);
   }
