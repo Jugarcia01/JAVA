@@ -1,0 +1,14 @@
+server:
+  port: 8080
+
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/${POSTGRES_DB:cashDB}
+    username: ${SPRING_R2DBC_USERNAME}
+    password: ${SPRING_R2DBC_PASSWORD}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
