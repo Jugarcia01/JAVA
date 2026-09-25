@@ -1,0 +1,44 @@
+plugins {
+    id 'org.springframework.boot' version '4.0.3' apply false
+    id 'io.spring.dependency-management' version '1.1.7' apply false
+}
+
+group = "com.cashapp"
+version = "1.0-SNAPSHOT"
+
+ext {
+    springBootVersion = '4.0.3'
+    camelSpringBootVersion = '4.14.0'
+    nettyBomVersion = '4.2.10.Final'
+    lombokVersion = '1.18.38'
+}
+
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {
+    plugins.withId('java') {
+        java {
+            toolchain {
+                languageVersion = JavaLanguageVersion.of(21)
+            }
+        }
+
+        apply plugin: 'io.spring.dependency-management'
+
+        dependencyManagement {
+            imports {
+                mavenBom "org.springframework.boot:spring-boot-dependencies:${rootProject.ext.springBootVersion}"
+                mavenBom "org.apache.camel.springboot:camel-spring-boot-dependencies:${rootProject.ext.camelSpringBootVersion}"
+                mavenBom "io.netty:netty-bom:${rootProject.ext.nettyBomVersion}"
+            }
+        }
+
+        tasks.withType(Test).configureEach {
+            useJUnitPlatform()
+        }
+    }
+}

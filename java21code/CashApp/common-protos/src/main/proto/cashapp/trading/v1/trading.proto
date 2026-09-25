@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package cashapp.trading.v1;
+
+option java_multiple_files = true;
+option java_package = "com.cashapp.common.protos.trading.v1";
+option java_outer_classname = "TradingProto";
+
+message Correlation {
+  string correlation_id = 1;
+}
+
+message Symbol {
+  string symbol = 1;
+}
+
+enum Timeframe {
+  TIMEFRAME_UNSPECIFIED = 0;
+  H1 = 1;
+  D1 = 2;
+}
+
+message TradeRequest {
+  string symbol = 1;
+  int64 as_of_epoch_millis = 2;
+  Timeframe timeframe = 3;
+  string correlation_id = 4;
+}
+
+enum TradeAction {
+  TRADE_ACTION_UNSPECIFIED = 0;
+  BUY = 1;
+  SELL = 2;
+  HOLD = 3;
+}
+
+message TradeDecision {
+  string symbol = 1;
+  int64 decided_at_epoch_millis = 2;
+  TradeAction action = 3;
+  double confidence = 4;
+  double stop_loss_pct = 5;
+  double take_profit_pct = 6;
+  string correlation_id = 7;
+}
+
+message SignalEvent {
+  string strategy_id = 1;
+  string symbol = 2;
+  Timeframe timeframe = 3;
+  int64 decided_at_epoch_millis = 4;
+  TradeAction action = 5;
+  double confidence = 6;
+  string correlation_id = 7;
+}
+
+service StrategyEngineService {
+  rpc EvaluateSignal(TradeRequest) returns (TradeDecision);
+  rpc EmitSignal(TradeRequest) returns (SignalEvent);
+}

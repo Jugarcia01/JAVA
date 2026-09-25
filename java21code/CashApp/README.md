@@ -12,54 +12,38 @@ CashApp/
 ├─ settings.gradle.kts
 ├─ gradlew
 ├─ gradlew.bat
-├─ gradle.properties
 ├─ docker-compose.yml
 ├─ gradle/
-└─ src/main/java/com/acme/trading/
-├─ TradingApplication.java
-├─ domain/
-│   ├─ model/
-│   │   ├─ TradeSignal.java
-│   │   ├─ TradeRequest.java
-│   │   ├─ TradeDecision.java
-│   │   └─ AuditLog.java
-│   └─ service/
-│       └─ SignalPolicy.java
-├─ application/
-│   ├─ port/in/
-│   │   └─ EvaluateSignalUseCase.java
-│   ├─ port/out/
-│   │   ├─ AuditLogRepositoryPort.java
-│   │   └─ MarketDataPort.java
-│   └─ usecase/
-│       └─ EvaluateSignalService.java
-├─ adapters/
-│   ├─ in/web/
-│   │   ├─ SignalHandler.java
-│   │   └─ SignalRouter.java
-│   └─ out/
-│       ├─ db/
-│       │   ├─ R2dbcAuditLogRepository.java
-│       │   └─ AuditLogEntity.java
-│       └─ market/
-│           └─ StubMarketDataAdapter.java
-└─ infrastructure/
-├─ camel/
-│   ├─ RoutesConfig.java
-│   └─ SignalEvaluationRoute.java
-└─ config/
-├─ BeansConfig.java
-└─ R2dbcConfig.java
+├─ cashapp-boot/                # Módulo de arranque (Spring Boot). Entry point.
+│  ├─ build.gradle
+│  └─ src/main/
+│     ├─ java/com/cashapp/TradingApplication.java
+│     └─ resources/             # application.yaml, scripts, dbScripts
+├─ common-domain/               # Modelos de dominio compartidos (records) entre módulos
+│  ├─ build.gradle
+│  └─ src/main/java/com/cashapp/trading/domain/model/
+├─ indicator-engine/            # Agregadores/indicadores (ej. TickToBarAggregator)
+├─ strategy-engine/             # Caso de uso de estrategias + adapters inbound (web/camel)
+├─ market-data/                 # Adapter outbound de MarketDataPort (stub/proveedor)
+├─ state-store/                 # Adapter outbound DB (R2DBC) para auditoría/estado
+├─ execution-engine/            # Adapter outbound de publicación de señales
+├─ common-protos/               # Contratos de comunicación es decir, Protos base (gRPC) para contratos entre módulos
+└─ common-security/             # Seguridad, credenciales y sesión IBKR y/o otras plataformas.
 
 ```
+
+## Architecture Documentation
+
+- [Common Domain](./common-domain.md) — Shared domain records and domain primitives used across CashApp services.
+
 
 ## Build & run
 - **Build**
   - `./gradlew build` (Linux/macOS)
   - `gradlew.bat build` (Windows)
 - **Run**
-  - `./gradlew bootRun` (Linux/macOS)
-  - `gradlew.bat bootRun` (Windows)
+  - `./gradlew :cashapp-boot:bootRun` (Linux/macOS)
+  - `gradlew.bat :cashapp-boot:bootRun` (Windows)
 
 
 ## Cómo probar rápido
@@ -71,7 +55,7 @@ docker compose up -d
 ### Crear tabla audit_logs (por psql o por cliente de base de datos):
 ### Script de creación de tabla
 
-El script SQL se encuentra en `src/main/resources/dbScripts/audit_logs.sql`:
+El script SQL se encuentra en `cashapp-boot/src/main/resources/dbScripts/audit_logs.sql`:
 
 ```sql
 CREATE TABLE IF NOT EXISTS audit_logs (
@@ -87,22 +71,22 @@ CREATE TABLE IF NOT EXISTS audit_logs (
 
 ### Ejecutar el script
 ```bash
-docker exec -i cashapp-postgres-1 psql -U ${POSTGRES_USER} -d ${POSTGRES_DB} < src/main/resources/dbScripts/audit_logs.sql
+docker exec -i cashapp-postgres-1 psql -U ${POSTGRES_USER} -d ${POSTGRES_DB} < cashapp-boot/src/main/resources/dbScripts/audit_logs.sql
 ```
 
 O alternativamente con psql local:
 ```bash
-psql -h localhost -U ${POSTGRES_USER} -d ${POSTGRES_DB} -f src/main/resources/dbScripts/audit_logs.sql
+psql -h localhost -U ${POSTGRES_USER} -d ${POSTGRES_DB} -f cashapp-boot/src/main/resources/dbScripts/audit_logs.sql
 ```
 Correr la app:
 
 - **Run**
-  - `./gradlew bootRun`
+  - `./gradlew :cashapp-boot:bootRun`
 
 ### Probar endpoint:
 Ejecutar el siguiente curl:
 ```bash
-curl "http://localhost:8080/signals/evaluate?symbol=NVDA&timeframe=H1" -H "X-Correlation-Id: demo-123"
+curl "http://localhost:8081/signals/evaluate?symbol=NVDA&timeframe=H1" -H "X-Correlation-Id: demo-123"
 ```
 Se deberá observar la respuesta JSON con BUY/HOLD y en Postgres un registro será almacenado en audit_logs.
 

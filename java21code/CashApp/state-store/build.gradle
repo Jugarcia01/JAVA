@@ -1,0 +1,16 @@
+plugins {
+    id 'java-library'
+}
+
+group = "com.cashapp"
+version = "1.0-SNAPSHOT"
+
+dependencies {
+    api project(':common-domain')
+    api project(':strategy-engine')
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
+    runtimeOnly 'org.postgresql:postgresql'
+    implementation 'org.postgresql:r2dbc-postgresql'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+}

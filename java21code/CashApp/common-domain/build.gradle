@@ -1,0 +1,11 @@
+plugins {
+    id 'java-library'
+}
+
+group = "com.cashapp"
+version = "1.0-SNAPSHOT"
+
+dependencies {
+    api 'io.projectreactor:reactor-core'
+    api 'jakarta.validation:jakarta.validation-api'
+}

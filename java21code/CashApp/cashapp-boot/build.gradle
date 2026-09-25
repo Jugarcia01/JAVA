@@ -1,0 +1,46 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+}
+
+group = "com.cashapp"
+version = "1.0-SNAPSHOT"
+
+springBoot {
+    mainClass = "com.cashapp.TradingApplication"
+}
+
+dependencies {
+    implementation project(':common-domain')
+    implementation project(':strategy-engine')
+    implementation project(':indicator-engine')
+    implementation project(':market-data')
+    implementation project(':state-store')
+    implementation project(':execution-engine')
+
+    implementation 'org.springframework.boot:spring-boot-starter-kafka'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    compileOnly "org.projectlombok:lombok:${rootProject.ext.lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${rootProject.ext.lombokVersion}"
+
+    implementation "org.apache.camel.springboot:camel-spring-boot-starter"
+    implementation "org.apache.camel.springboot:camel-reactive-streams-starter"
+    implementation "org.apache.camel.springboot:camel-http-starter"
+    implementation "org.apache.camel.springboot:camel-jackson-starter"
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
+    runtimeOnly 'org.postgresql:postgresql'
+    implementation 'org.postgresql:r2dbc-postgresql'
+
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    testCompileOnly "org.projectlombok:lombok:${rootProject.ext.lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:lombok:${rootProject.ext.lombokVersion}"
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.projectreactor:reactor-test'
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
