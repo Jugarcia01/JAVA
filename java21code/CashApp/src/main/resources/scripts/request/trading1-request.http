@@ -1,0 +1,25 @@
+
+### Example Request 1
+POST http://localhost:8080/strategy/ingest/ticks?aggregateBars=true&timeframe=H1
+X-Correlation-Id: demo-2
+Content-Type: application/json
+
+{
+  "symbol": "NVDA",
+  "eventTime": "2026-04-12T10:00:05Z",
+  "price": 100.0,
+  "size": 10.0
+}
+
+### Example Request 2
+POST http://localhost:8080/strategy/ingest/ticks?aggregateBars=true&timeframe=H1
+X-Correlation-Id: demo-3
+Content-Type: application/json
+
+{
+    "symbol": "NVDA",
+    "eventTime": "2026-04-12T11:00:05Z",
+    "price": 105.0,
+    "size": 1.0
+}
+
