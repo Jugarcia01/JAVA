@@ -12,3 +12,9 @@ management:
     web:
       exposure:
         include: health,info,metrics
+
+auth-service:
+  ibrk:
+    username: ${IBRK_USERNAME}
+    password: ${IBRK_PASSWORD}
+    token2fa: ${IBRK_2FA_CODE}
